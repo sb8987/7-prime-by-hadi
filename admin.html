@@ -253,8 +253,8 @@
             </div>
 
             <div class="input-group">
-                <label>Original Cut Price (PKR) *</label>
-                <input type="number" id="pOldPrice" placeholder="e.g. 6500" required>
+                <label>Original Cut Price (Optional PKR)</label>
+                <input type="number" id="pOldPrice" placeholder="e.g. 6500">
             </div>
 
             <div class="input-group">
@@ -263,24 +263,24 @@
             </div>
 
             <div class="input-group full-width">
-                <label>Upload Gallery Pictures (Multiple Local Pics Supported) *</label>
+                <label>Upload Gallery Pictures (Select Local Pics)</label>
                 <input type="file" id="pFiles" accept="image/*" multiple onchange="previewImages(event)">
                 <div id="imagePreviews" class="preview-container"></div>
             </div>
 
             <div class="input-group">
                 <label>Top Note</label>
-                <input type="text" id="pTop" placeholder="e.g. Italian Bergamot">
+                <input type="text" id="pTop" placeholder="e.g. Italian Bergamot & Spiced Cardamom">
             </div>
 
             <div class="input-group">
                 <label>Heart Note</label>
-                <input type="text" id="pHeart" placeholder="e.g. Turkish Rose">
+                <input type="text" id="pHeart" placeholder="e.g. Royal Turkish Rose & Amber">
             </div>
 
             <div class="input-group full-width">
                 <label>Base Note</label>
-                <input type="text" id="pBase" placeholder="e.g. Royal Oud">
+                <input type="text" id="pBase" placeholder="e.g. Cambodian Oud & Sandalwood">
             </div>
 
             <button type="submit" id="submitBtn" class="btn-action full-width">Save Perfume To Store</button>
@@ -303,6 +303,8 @@
             previewContainer.innerHTML = '';
             currentBase64Images = [];
 
+            if (!files || files.length === 0) return;
+
             Array.from(files).forEach(file => {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -315,19 +317,25 @@
 
         // Fetch Data
         function getData(key, defaultValue) {
-            return JSON.parse(localStorage.getItem(key)) || defaultValue;
+            try {
+                return JSON.parse(localStorage.getItem(key)) || defaultValue;
+            } catch(e) {
+                return defaultValue;
+            }
         }
 
         function setData(key, value) {
-            localStorage.setItem(key, JSON.stringify(value));
+            try {
+                localStorage.setItem(key, JSON.stringify(value));
+            } catch(e) {
+                alert("Storage Limit Reached! Image ka size chota karke upload karein.");
+            }
         }
 
         // Load Initial Admin Values
         function loadAdmin() {
-            // Theme
             document.getElementById('themeSelect').value = getData('hadi_theme', 'gold');
 
-            // Tester
             const tester = getData('hadi_tester', {
                 title: "7 Prime Discovery Set (5ml Testers)",
                 price: 1200,
@@ -337,7 +345,6 @@
             document.getElementById('tPrice').value = tester.price;
             document.getElementById('tDesc').value = tester.desc;
 
-            // Products
             renderProductsList();
         }
 
@@ -351,7 +358,7 @@
             e.preventDefault();
             const tester = {
                 title: document.getElementById('tTitle').value,
-                price: parseInt(document.getElementById('tPrice').value),
+                price: parseInt(document.getElementById('tPrice').value) || 0,
                 desc: document.getElementById('tDesc').value
             };
             setData('hadi_tester', tester);
@@ -370,7 +377,7 @@
             }
 
             products.forEach((p, idx) => {
-                const img = (p.images && p.images.length > 0) ? p.images[0] : (p.image || '');
+                const img = (p.images && p.images.length > 0) ? p.images[0] : (p.image || 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=400');
                 container.innerHTML += `
                     <div class="item-row">
                         <img src="${img}" alt="pic">
@@ -390,25 +397,34 @@
         // Form Submit (Add or Edit)
         function handleFormSubmit(e) {
             e.preventDefault();
+            
             const editIdx = parseInt(document.getElementById('editIndex').value);
             const products = getData('hadi_perfumes', []);
 
             let imagesToSave = currentBase64Images;
-            if(imagesToSave.length === 0 && editIdx !== -1) {
-                imagesToSave = products[editIdx].images || [products[editIdx].image];
+            if(imagesToSave.length === 0) {
+                if(editIdx !== -1 && products[editIdx]) {
+                    imagesToSave = products[editIdx].images || [products[editIdx].image];
+                } else {
+                    imagesToSave = ['https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600'];
+                }
             }
+
+            const pPriceVal = parseInt(document.getElementById('pPrice').value);
+            const pOldPriceInput = document.getElementById('pOldPrice').value;
+            const pOldPriceVal = pOldPriceInput ? parseInt(pOldPriceInput) : (pPriceVal + 1500);
 
             const item = {
                 id: editIdx === -1 ? Date.now() : products[editIdx].id,
                 name: document.getElementById('pName').value,
-                pricePKR: parseInt(document.getElementById('pPrice').value),
-                oldPricePKR: parseInt(document.getElementById('pOldPrice').value),
-                volume: document.getElementById('pVolume').value,
+                pricePKR: pPriceVal,
+                oldPricePKR: pOldPriceVal,
+                volume: document.getElementById('pVolume').value || "100 ml",
                 images: imagesToSave,
                 image: imagesToSave[0] || '',
-                top: document.getElementById('pTop').value,
-                heart: document.getElementById('pHeart').value,
-                base: document.getElementById('pBase').value
+                top: document.getElementById('pTop').value || "Italian Bergamot & Spiced Cardamom",
+                heart: document.getElementById('pHeart').value || "Royal Turkish Rose & Amber",
+                base: document.getElementById('pBase').value || "Cambodian Oud & Sandalwood"
             };
 
             if(editIdx === -1) {
@@ -420,7 +436,7 @@
             setData('hadi_perfumes', products);
             resetForm();
             renderProductsList();
-            alert("Product Saved Successfully!");
+            alert("Perfume Saved Successfully To Store!");
         }
 
         function editProduct(idx) {
@@ -430,7 +446,7 @@
             document.getElementById('editIndex').value = idx;
             document.getElementById('pName').value = p.name;
             document.getElementById('pPrice').value = p.pricePKR;
-            document.getElementById('pOldPrice').value = p.oldPricePKR;
+            document.getElementById('pOldPrice').value = p.oldPricePKR || '';
             document.getElementById('pVolume').value = p.volume;
             document.getElementById('pTop').value = p.top || '';
             document.getElementById('pHeart').value = p.heart || '';
@@ -444,7 +460,7 @@
             previewContainer.innerHTML = '';
             const imgs = p.images || [p.image];
             imgs.forEach(src => {
-                previewContainer.innerHTML += `<img src="${src}" class="preview-thumb">`;
+                if(src) previewContainer.innerHTML += `<img src="${src}" class="preview-thumb">`;
             });
             currentBase64Images = [];
         }
