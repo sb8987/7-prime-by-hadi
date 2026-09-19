@@ -3,187 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>7 Prime | Advanced Master Admin</title>
+    <title>7 Prime | Realtime Master Admin</title>
+    <!-- Firebase App & Database Compatibility Libraries -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        :root {
-            --gold-primary: #D4AF37;
-            --bg-dark: #070709;
-            --card-bg: rgba(18, 18, 24, 0.95);
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: #ffffff;
-            padding: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            margin-bottom: 25px;
-        }
-
-        .brand-title {
-            font-size: 22px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #FFF6D5, #D4AF37, #AA7C11);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .section-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .section-title {
-            font-size: 16px;
-            color: #D4AF37;
-            margin-bottom: 15px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        @media(min-width: 600px) {
-            .form-grid { grid-template-columns: repeat(2, 1fr); }
-            .full-width { grid-column: span 2; }
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .input-group label {
-            font-size: 11px;
-            color: #aaa;
-            text-transform: uppercase;
-        }
-
-        .input-group input, .input-group select, .input-group textarea {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            outline: none;
-        }
-
-        .input-group input:focus {
-            border-color: #D4AF37;
-        }
-
-        .btn-action {
-            background: linear-gradient(135deg, #D4AF37, #B8860B);
-            color: #000;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 12px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-action:hover {
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-        }
-
-        /* Image Previews */
-        .preview-container {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .preview-thumb {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            object-fit: cover;
-            border: 1px solid #D4AF37;
-        }
-
-        /* Product List Styles */
-        .item-row {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        .item-row img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-
-        .item-meta {
-            flex-grow: 1;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        :root { --gold-primary: #D4AF37; --bg-dark: #070709; --card-bg: rgba(18, 18, 24, 0.95); }
+        body { background-color: var(--bg-dark); color: #ffffff; padding: 20px; max-width: 1000px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid rgba(212, 175, 55, 0.3); margin-bottom: 25px; }
+        .brand-title { font-size: 22px; font-weight: 900; letter-spacing: 2px; background: linear-gradient(135deg, #FFF6D5, #D4AF37, #AA7C11); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .section-card { background: var(--card-bg); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 16px; padding: 20px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .section-title { font-size: 16px; color: #D4AF37; margin-bottom: 15px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        @media(min-width: 600px) { .form-grid { grid-template-columns: repeat(2, 1fr); } .full-width { grid-column: span 2; } }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 11px; color: #aaa; text-transform: uppercase; }
+        .input-group input, .input-group select, .input-group textarea { background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.15); color: #fff; padding: 10px; border-radius: 8px; font-size: 13px; outline: none; }
+        .input-group input:focus { border-color: #D4AF37; }
+        .btn-action { background: linear-gradient(135deg, #D4AF37, #B8860B); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 12px; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+        .preview-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .preview-thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1px solid #D4AF37; }
+        .item-row { background: rgba(0,0,0,0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 10px; }
+        .item-row img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
+        .item-meta { flex-grow: 1; }
         .item-meta h4 { font-size: 14px; color: #fff; }
         .item-meta p { font-size: 12px; color: #D4AF37; }
-
-        .btn-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .btn-edit {
-            background: rgba(212, 175, 55, 0.2);
-            color: #D4AF37;
-            border: 1px solid #D4AF37;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .btn-delete {
-            background: rgba(255, 77, 77, 0.2);
-            color: #ff4d4d;
-            border: 1px solid #ff4d4d;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-        }
+        .btn-group { display: flex; gap: 8px; }
+        .btn-edit { background: rgba(212, 175, 55, 0.2); color: #D4AF37; border: 1px solid #D4AF37; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+        .btn-delete { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+        .sync-badge { font-size: 10px; padding: 3px 8px; border-radius: 10px; background: rgba(0,255,0,0.15); color: #00ff88; border: 1px solid #00ff88; }
     </style>
 </head>
 <body>
@@ -191,7 +40,7 @@
     <div class="header">
         <div>
             <div class="brand-title">7 PRIME MASTER ADMIN</div>
-            <div style="font-size: 10px; color: #888;">THEME, PRODUCTS & TESTER CONTROLLER</div>
+            <div style="font-size: 10px; color: #888;">GLOBAL REALTIME SYNC <span class="sync-badge">● LIVE</span></div>
         </div>
         <a href="index.html" target="_blank" style="color: #D4AF37; font-size: 12px; text-decoration: none; border: 1px solid #D4AF37; padding: 5px 12px; border-radius: 15px;">View Live Store ↗</a>
     </div>
@@ -226,7 +75,7 @@
             </div>
             <div class="input-group full-width">
                 <label>Description</label>
-                <input type="text" id="tDesc" placeholder="Includes 5ml sample testers for all signature scents." required>
+                <input type="text" id="tDesc" placeholder="Includes sample testers for signature scents." required>
             </div>
             <button type="submit" class="btn-action full-width">Update Tester Box Info</button>
         </form>
@@ -240,7 +89,7 @@
         </div>
         
         <form id="perfumeForm" onsubmit="handleFormSubmit(event)" class="form-grid">
-            <input type="hidden" id="editIndex" value="-1">
+            <input type="hidden" id="editKey" value="">
 
             <div class="input-group">
                 <label>Perfume Name *</label>
@@ -283,20 +132,34 @@
                 <input type="text" id="pBase" placeholder="e.g. Cambodian Oud & Sandalwood">
             </div>
 
-            <button type="submit" id="submitBtn" class="btn-action full-width">Save Perfume To Store</button>
+            <button type="submit" id="submitBtn" class="btn-action full-width">Save Perfume To Global Store</button>
         </form>
     </div>
 
     <!-- 4. LIVE PRODUCTS MANAGER -->
     <div class="section-card">
         <div class="section-title">📦 Manage Live Products</div>
-        <div id="productsList"></div>
+        <div id="productsList">Loading Products from Global Database...</div>
     </div>
 
     <script>
-        let currentBase64Images = [];
+        // FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyRIjanyxV-71boLBvpUxBlQm-HgYy1f0Xc",
+            authDomain: "seven-prime-by-hadi.firebaseapp.com",
+            databaseURL: "https://seven-prime-by-hadi-default-rtdb.firebaseio.com",
+            projectId: "seven-prime-by-hadi",
+            storageBucket: "seven-prime-by-hadi.firebasestorage.app",
+            messagingSenderId: "565525923161",
+            appId: "1:565525923161:web:3886d43atec0095193848"
+        };
 
-        // Preview and Convert Images to Base64
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentBase64Images = [];
+        let globalProducts = {};
+
         function previewImages(event) {
             const files = event.target.files;
             const previewContainer = document.getElementById('imagePreviews');
@@ -315,43 +178,29 @@
             });
         }
 
-        // Fetch Data
-        function getData(key, defaultValue) {
-            try {
-                return JSON.parse(localStorage.getItem(key)) || defaultValue;
-            } catch(e) {
-                return defaultValue;
+        // Listen for Realtime DB Changes
+        db.ref('store_theme').on('value', snap => {
+            if(snap.exists()) document.getElementById('themeSelect').value = snap.val();
+        });
+
+        db.ref('tester_box').on('value', snap => {
+            if(snap.exists()){
+                const t = snap.val();
+                document.getElementById('tTitle').value = t.title || '';
+                document.getElementById('tPrice').value = t.price || '';
+                document.getElementById('tDesc').value = t.desc || '';
             }
-        }
+        });
 
-        function setData(key, value) {
-            try {
-                localStorage.setItem(key, JSON.stringify(value));
-            } catch(e) {
-                alert("Storage Limit Reached! Image ka size chota karke upload karein.");
-            }
-        }
-
-        // Load Initial Admin Values
-        function loadAdmin() {
-            document.getElementById('themeSelect').value = getData('hadi_theme', 'gold');
-
-            const tester = getData('hadi_tester', {
-                title: "7 Prime Discovery Set (5ml Testers)",
-                price: 1200,
-                desc: "Not sure which one to pick? Order our 5ml Discovery Sample Set to experience all signature scents before buying full bottles."
-            });
-            document.getElementById('tTitle').value = tester.title;
-            document.getElementById('tPrice').value = tester.price;
-            document.getElementById('tDesc').value = tester.desc;
-
+        db.ref('products').on('value', snap => {
+            globalProducts = snap.val() || {};
             renderProductsList();
-        }
+        });
 
         function saveTheme() {
             const val = document.getElementById('themeSelect').value;
-            setData('hadi_theme', val);
-            alert("Theme Updated!");
+            db.ref('store_theme').set(val);
+            alert("Theme Updated Globally!");
         }
 
         function saveTesterData(e) {
@@ -361,22 +210,22 @@
                 price: parseInt(document.getElementById('tPrice').value) || 0,
                 desc: document.getElementById('tDesc').value
             };
-            setData('hadi_tester', tester);
-            alert("Tester Box Updated Successfully!");
+            db.ref('tester_box').set(tester);
+            alert("Tester Box Updated Globally!");
         }
 
-        // Render List
         function renderProductsList() {
-            const products = getData('hadi_perfumes', []);
             const container = document.getElementById('productsList');
             container.innerHTML = '';
 
-            if(products.length === 0) {
-                container.innerHTML = `<p style="color:#666; font-size:12px;">No products added yet.</p>`;
+            const keys = Object.keys(globalProducts);
+            if(keys.length === 0) {
+                container.innerHTML = `<p style="color:#666; font-size:12px;">No products in database yet.</p>`;
                 return;
             }
 
-            products.forEach((p, idx) => {
+            keys.forEach(key => {
+                const p = globalProducts[key];
                 const img = (p.images && p.images.length > 0) ? p.images[0] : (p.image || 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=400');
                 container.innerHTML += `
                     <div class="item-row">
@@ -386,25 +235,22 @@
                             <p>PKR ${p.pricePKR}</p>
                         </div>
                         <div class="btn-group">
-                            <button onclick="editProduct(${idx})" class="btn-edit">Edit</button>
-                            <button onclick="deleteProduct(${idx})" class="btn-delete">Delete</button>
+                            <button onclick="editProduct('${key}')" class="btn-edit">Edit</button>
+                            <button onclick="deleteProduct('${key}')" class="btn-delete">Delete</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        // Form Submit (Add or Edit)
         function handleFormSubmit(e) {
             e.preventDefault();
-            
-            const editIdx = parseInt(document.getElementById('editIndex').value);
-            const products = getData('hadi_perfumes', []);
+            const editKey = document.getElementById('editKey').value;
 
             let imagesToSave = currentBase64Images;
             if(imagesToSave.length === 0) {
-                if(editIdx !== -1 && products[editIdx]) {
-                    imagesToSave = products[editIdx].images || [products[editIdx].image];
+                if(editKey && globalProducts[editKey]) {
+                    imagesToSave = globalProducts[editKey].images || [globalProducts[editKey].image];
                 } else {
                     imagesToSave = ['https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600'];
                 }
@@ -415,7 +261,6 @@
             const pOldPriceVal = pOldPriceInput ? parseInt(pOldPriceInput) : (pPriceVal + 1500);
 
             const item = {
-                id: editIdx === -1 ? Date.now() : products[editIdx].id,
                 name: document.getElementById('pName').value,
                 pricePKR: pPriceVal,
                 oldPricePKR: pOldPriceVal,
@@ -427,23 +272,19 @@
                 base: document.getElementById('pBase').value || "Cambodian Oud & Sandalwood"
             };
 
-            if(editIdx === -1) {
-                products.push(item);
+            if(editKey) {
+                db.ref('products/' + editKey).set(item);
             } else {
-                products[editIdx] = item;
+                db.ref('products').push(item);
             }
 
-            setData('hadi_perfumes', products);
             resetForm();
-            renderProductsList();
-            alert("Perfume Saved Successfully To Store!");
+            alert("Perfume Saved Live To All Devices!");
         }
 
-        function editProduct(idx) {
-            const products = getData('hadi_perfumes', []);
-            const p = products[idx];
-
-            document.getElementById('editIndex').value = idx;
+        function editProduct(key) {
+            const p = globalProducts[key];
+            document.getElementById('editKey').value = key;
             document.getElementById('pName').value = p.name;
             document.getElementById('pPrice').value = p.pricePKR;
             document.getElementById('pOldPrice').value = p.oldPricePKR || '';
@@ -453,7 +294,7 @@
             document.getElementById('pBase').value = p.base || '';
 
             document.getElementById('formModeTitle').innerText = "✏️ Edit Perfume Details";
-            document.getElementById('submitBtn').innerText = "Update Perfume";
+            document.getElementById('submitBtn').innerText = "Update Global Perfume";
             document.getElementById('cancelEditBtn').style.display = "inline";
 
             const previewContainer = document.getElementById('imagePreviews');
@@ -465,26 +306,21 @@
             currentBase64Images = [];
         }
 
-        function deleteProduct(idx) {
-            if(confirm("Are you sure you want to delete this perfume?")) {
-                const products = getData('hadi_perfumes', []);
-                products.splice(idx, 1);
-                setData('hadi_perfumes', products);
-                renderProductsList();
+        function deleteProduct(key) {
+            if(confirm("Are you sure you want to delete this perfume globally?")) {
+                db.ref('products/' + key).remove();
             }
         }
 
         function resetForm() {
             document.getElementById('perfumeForm').reset();
-            document.getElementById('editIndex').value = "-1";
+            document.getElementById('editKey').value = "";
             document.getElementById('formModeTitle').innerText = "✨ Add New Perfume";
-            document.getElementById('submitBtn').innerText = "Save Perfume To Store";
+            document.getElementById('submitBtn').innerText = "Save Perfume To Global Store";
             document.getElementById('cancelEditBtn').style.display = "none";
             document.getElementById('imagePreviews').innerHTML = '';
             currentBase64Images = [];
         }
-
-        loadAdmin();
     </script>
 </body>
 </html>
