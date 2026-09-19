@@ -832,7 +832,7 @@
                 document.getElementById('tTitle').innerText = t.title || '7 Prime Discovery Box';
                 document.getElementById('tDesc').innerText = t.desc || 'Experience all our luxury scents with sample testers.';
                 document.getElementById('tPrice').innerText = 'PKR ' + (t.price || 1200);
-                document.getElementById('tWhatsapp').href = `https://wa.me/923180092305?text=${encodeURIComponent('Hi 7 Prime, I want to order the ' + (t.title || 'Discovery Box'))}`;
+                document.getElementById('tWhatsapp').href = `https://wa.me/923374641241?text=${encodeURIComponent('Hi 7 Prime, I want to order the ' + (t.title || 'Discovery Box'))}`;
                 document.getElementById('testerBanner').style.display = 'flex';
             }
         });
@@ -858,7 +858,7 @@
                 const imgSrc = (p.images && p.images.length > 0) ? p.images[0] : (p.image || 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=600');
                 
                 const waMessage = `Hi 7 Prime, I want to order *${p.name}* (${p.volume || '100 ml'}) for PKR ${p.pricePKR}.`;
-                const waLink = `https://wa.me/923180092305?text=${encodeURIComponent(waMessage)}`;
+                const waLink = `https://wa.me/923374641241?text=${encodeURIComponent(waMessage)}`;
 
                 grid.innerHTML += `
                     <div class="product-card">
@@ -923,7 +923,7 @@
             }
 
             const waMsg = `Hi 7 Prime, I want to order *${p.name}* (${p.volume || '100 ml'}) for PKR ${p.pricePKR}.`;
-            document.getElementById('modalWaBtn').href = `https://wa.me/923180092305?text=${encodeURIComponent(waMsg)}`;
+            document.getElementById('modalWaBtn').href = `https://wa.me/923374641241?text=${encodeURIComponent(waMsg)}`;
 
             document.getElementById('quickModal').style.display = 'flex';
         }
